@@ -1,4 +1,5 @@
 import requests
+import logging
 
 MAX_RESULTS_PER_PAGE = 100
 
@@ -9,6 +10,7 @@ def getTopContributers(org, repo, n):
     '''
     Returns top n contributors of a given repo based on number of contributions
     '''
+    logging.info('Fetching top {} contributors for {}/{}'.format(n, org, repo))
     ans = []
     URL = 'https://api.github.com/repos/{orgName}/{repoName}/contributors'.format(orgName = org, repoName = repo)
     p = {
@@ -22,6 +24,7 @@ def getTopContributers(org, repo, n):
 
     '''
     while(n > 0):
+        logging.info('Top contributors sending req for page {}'.format(p['page']))
         r = requests.get(url = URL, params = p)
         data = r.json()
         if (r.status_code == 200):
@@ -39,7 +42,7 @@ def getTopContributers(org, repo, n):
             print(r.status_code)
             print(r.text)
             exit(1)
-        
+    logging.info('Found top {} contributors for {}/{}'.format(n, org, repo))  
     return ans
 
 
@@ -53,6 +56,7 @@ def getRepos(org):
         'per_page' : MAX_RESULTS_PER_PAGE,
         'page' : 1
     }
+    logging.info('Loading all repos for {}'.format(org))
 
     '''
 
@@ -60,6 +64,7 @@ def getRepos(org):
 
     '''
     while(True):
+        logging.info('getRepos sending req for page {}'.format(p['page']))
         r = requests.get(url = URL, params = p)      
         data = r.json()
         if (r.status_code == 200):
@@ -83,9 +88,7 @@ def getTopRepos(org, n):
     Returns Top n repos of the given org based on fork counts
     '''
     repoList = getRepos(org)
-    #print(repoList)
     repoList.sort(key = lambda x:x[1], reverse = True)
     return repoList[:n]
 
-# print(getTopContributers('google', 'automl', 2))
-#print(getTopRepos('coding-club-iit-jammu', 15))
+
