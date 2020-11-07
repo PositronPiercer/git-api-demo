@@ -12,4 +12,4 @@ Find the n most popular repositories of a given organization on Github (Eg:https
    * `[-h]` help
    * `[-v]` verbose mode
 
-The result is saved in a file named <orgName>.txt
+The result is saved in a file named `<orgName>.txt`
