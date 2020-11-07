@@ -3,8 +3,7 @@ import logging
 
 MAX_RESULTS_PER_PAGE = 100
 
-def comp(repo1, repo2):
-    return repo1[1] <= repo2[1]
+
 
 def getTopContributers(org, repo, n):
     '''
